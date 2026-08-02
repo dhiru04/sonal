@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Forever — S ❤️ D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--night-gradient); color: #fff2e4; }
+  .eyebrow { color: rgba(255,242,228,0.7); }
+
+  .moon-forever {
+    position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
+    width: clamp(3rem, 9vw, 5rem); height: clamp(3rem, 9vw, 5rem);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fffdf3, var(--gold));
+    box-shadow: 0 0 3.5rem rgba(247,215,116,0.55);
+  }
+
+  .heartbeat {
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    animation: pulseHeart 1.1s ease-in-out infinite;
+    margin: var(--space-sm) 0;
+  }
+
+  .initials { font-family: var(--font-script); font-size: clamp(2.2rem, 7vw, 3.6rem); color: var(--gold); }
+
+  .forever-type {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    min-height: 6rem;
+    max-width: 32rem;
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+  }
+
+  .credit {
+    margin-top: var(--space-lg);
+    font-size: var(--fs-small);
+    color: rgba(255,242,228,0.75);
+    line-height: 1.8;
+  }
+  .credit strong { color: #fff2e4; font-family: var(--font-script); font-size: 1.3rem; }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="petals,stars" data-count="14" aria-hidden="true"></div>
+    <div class="moon-forever anim-glow" aria-hidden="true"></div>
+
+    <div class="scene__content" style="margin-top: var(--space-lg);">
+      <p class="eyebrow">the story continues, always</p>
+      <p class="initials">S <span class="heartbeat" style="display:inline-block; font-size: 1.4rem;">❤️</span> D</p>
+
+      <p class="forever-type" id="foreverText"></p>
+
+      <div class="credit fade-in is-visible">
+        <p>Made with ❤️</p>
+        <p>Especially for<br><strong>Sonal Bhati</strong></p>
+        <p>By Dheeraj</p>
+      </div>
+
+      <a class="btn" href="index.html" data-transition style="margin-top: var(--space-lg);">Start Our Story Again ↻</a>
+    </div>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">Once upon a birthday, again…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const foreverText = `Some stories are measured in years...
+
+Ours has only just begun.
+
+Yet every moment already feels priceless.
+
+If I get the chance...
+
+I'll choose you...
+
+Again...
+
+Every single day.`;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      window.BDAY.typewriter(document.getElementById('foreverText'), foreverText, 34);
+    });
+  </script>
+</body>
+</html>

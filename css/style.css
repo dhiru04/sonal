@@ -1,0 +1,301 @@
+/* ============================================================
+   DISNEY-INSPIRED BIRTHDAY SURPRISE — CORE STYLESHEET
+   Design tokens, typography, layout, shared components
+   ============================================================ */
+
+:root {
+  /* ---- Palette ---- */
+  --pink: #F8C8DC;
+  --peach: #FFD8BE;
+  --lavender: #DCCEF9;
+  --baby-blue: #CFE8FF;
+  --mint: #D7F5E9;
+  --cream: #FFF8F5;
+  --gold: #F7D774;
+  --text: #5A4A52;
+  --text-soft: #8A7A82;
+  --white: #FFFFFF;
+
+  /* Gradients built from the palette only */
+  --sky-gradient: linear-gradient(180deg, var(--lavender) 0%, var(--baby-blue) 40%, var(--pink) 100%);
+  --dawn-gradient: linear-gradient(180deg, var(--peach) 0%, var(--pink) 55%, var(--lavender) 100%);
+  --dream-gradient: linear-gradient(160deg, var(--cream) 0%, var(--pink) 100%);
+  --night-gradient: linear-gradient(180deg, #2c2440 0%, #4a3a63 45%, #7a5a86 100%);
+  --gold-shimmer: linear-gradient(120deg, var(--gold), #fff2c4, var(--gold));
+
+  /* ---- Type scale ---- */
+  --font-script: 'Great Vibes', cursive;
+  --font-script-alt: 'Parisienne', cursive;
+  --font-body: 'Poppins', sans-serif;
+
+  --fs-hero: clamp(2.8rem, 9vw, 6.5rem);
+  --fs-title: clamp(2.2rem, 6vw, 4rem);
+  --fs-subtitle: clamp(1.3rem, 3.4vw, 2rem);
+  --fs-body-lg: clamp(1.05rem, 2.2vw, 1.35rem);
+  --fs-body: clamp(0.95rem, 1.8vw, 1.1rem);
+  --fs-small: clamp(0.78rem, 1.4vw, 0.92rem);
+
+  /* ---- Spacing ---- */
+  --space-xs: clamp(0.4rem, 1vw, 0.6rem);
+  --space-sm: clamp(0.8rem, 2vw, 1.2rem);
+  --space-md: clamp(1.4rem, 3.5vw, 2.4rem);
+  --space-lg: clamp(2.2rem, 6vw, 4rem);
+  --space-xl: clamp(3rem, 9vw, 6rem);
+
+  /* ---- Misc ---- */
+  --radius-soft: clamp(1rem, 3vw, 2rem);
+  --radius-pill: 999px;
+  --shadow-soft: 0 1rem 3rem rgba(90, 74, 82, 0.15);
+  --shadow-gold: 0 0.5rem 1.8rem rgba(247, 215, 116, 0.45);
+  --transition-dreamy: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body, h1, h2, h3, p, figure, blockquote { margin: 0; }
+img, picture { max-width: 100%; display: block; }
+button, input { font: inherit; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--cream);
+  min-height: 100svh;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Layout shell used on every page ---- */
+.scene {
+  position: relative;
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+
+.scene__content {
+  position: relative;
+  z-index: 5;
+  max-width: min(56rem, 92vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.particles-layer,
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---- Typography helpers ---- */
+.script {
+  font-family: var(--font-script);
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.script-alt { font-family: var(--font-script-alt); }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.title-hero {
+  font-family: var(--font-script);
+  font-size: var(--fs-hero);
+  color: var(--text);
+  text-shadow: 0 0.3rem 1rem rgba(255,255,255,0.6);
+}
+
+.title {
+  font-family: var(--font-script);
+  font-size: var(--fs-title);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-subtitle);
+  color: var(--text-soft);
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-body-lg);
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* Readable "romantic" text — an elegant italic in the body font,
+   used anywhere a longer passage needs to be easy to read while
+   still feeling soft and personal (letters, wishes, instructions). */
+.romantic-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--fs-body-lg);
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.instruction-hint {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-small);
+  color: var(--text-soft);
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: var(--radius-pill);
+  padding: 0.5em 1.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-body);
+  letter-spacing: 0.03em;
+  padding: 0.95em 2.2em;
+  min-height: 3rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  color: var(--text);
+  background: var(--gold-shimmer);
+  background-size: 200% auto;
+  box-shadow: var(--shadow-gold);
+  transition: transform var(--transition-dreamy), box-shadow var(--transition-dreamy), background-position var(--transition-dreamy);
+  touch-action: manipulation;
+}
+
+.btn:hover, .btn:focus-visible {
+  transform: translateY(-0.2rem) scale(1.03);
+  background-position: right center;
+  box-shadow: 0 0.8rem 2.4rem rgba(247, 215, 116, 0.6);
+}
+
+.btn:active { transform: translateY(0) scale(0.98); }
+
+.btn:focus-visible {
+  outline: 3px solid var(--lavender);
+  outline-offset: 3px;
+}
+
+.btn--ghost {
+  background: rgba(255,255,255,0.55);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(255,255,255,0.8);
+}
+
+.btn--ghost:hover { box-shadow: 0 0.8rem 2rem rgba(90,74,82,0.18); }
+
+/* ---- Progress dots (journey indicator) ---- */
+.journey-dots {
+  position: fixed;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.5);
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(6px);
+}
+.journey-dots span {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--text-soft);
+  opacity: 0.35;
+}
+.journey-dots span.is-active { opacity: 1; background: var(--text); transform: scale(1.3); }
+
+/* ---- Cards (reasons, beginning) ---- */
+.card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.9);
+  border-radius: var(--radius-soft);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-dreamy), box-shadow var(--transition-dreamy);
+}
+.card:hover {
+  transform: translateY(-0.4rem) rotate(-0.3deg);
+  box-shadow: 0 1.4rem 3.4rem rgba(90,74,82,0.22);
+}
+
+/* ---- Utility ---- */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.fade-in { opacity: 0; transform: translateY(1.2rem); }
+.fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.9s var(--transition-dreamy), transform 0.9s var(--transition-dreamy);
+}
+
+.page-transition-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--dream-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+.page-transition-veil.is-active { opacity: 1; pointer-events: all; }
+.page-transition-veil .script { font-size: var(--fs-title); }

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>A Little Surprise Awaits — For Sonal</title>
+<meta name="description" content="A magical birthday surprise, made with love." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--sky-gradient); }
+  .loader-scene { justify-content: space-between; padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+  .moon {
+    position: absolute; top: 6%; right: 10%;
+    width: clamp(3.5rem, 10vw, 6rem); height: clamp(3.5rem, 10vw, 6rem);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fffdf3, var(--gold));
+    box-shadow: 0 0 4rem rgba(247,215,116,0.55);
+  }
+  .loader-quote {
+    font-family: var(--font-script-alt);
+    font-size: clamp(1.3rem, 4vw, 2.1rem);
+    max-width: 34rem;
+    color: var(--text);
+  }
+  .loader-track {
+    width: min(70vw, 22rem);
+    height: 0.5rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255,255,255,0.55);
+    overflow: hidden;
+    box-shadow: inset 0 0 0.4rem rgba(90,74,82,0.1);
+  }
+  .loader-fill {
+    height: 100%; width: 0%;
+    background: var(--gold-shimmer);
+    border-radius: var(--radius-pill);
+    transition: width 0.2s ease-out;
+  }
+  .loader-percent {
+    font-family: var(--font-body);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-soft);
+    font-size: var(--fs-small);
+  }
+  .loader-title {
+    font-family: var(--font-script);
+    font-size: clamp(1.8rem, 6vw, 3rem);
+  }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+
+  <div class="scene loader-scene">
+    <div class="particles-layer" data-particles="clouds,stars" data-count="10" aria-hidden="true"></div>
+    <div class="moon anim-glow" aria-hidden="true"></div>
+
+    <div class="scene__content" style="margin-top:var(--space-lg);">
+      <p class="eyebrow">a story made only for you</p>
+      <h1 class="loader-title">Once Upon A Birthday…</h1>
+    </div>
+
+    <div class="scene__content" style="gap: var(--space-md);">
+      <p class="loader-quote romantic-text" id="loaderQuote" style="font-style: normal;">"Every beautiful story begins with a little surprise..."</p>
+      <div class="loader-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Loading your surprise">
+        <div class="loader-fill" id="loaderFill"></div>
+      </div>
+      <p class="loader-percent"><span id="loaderPercent">0</span>%</p>
+    </div>
+  </div>
+
+  <div class="page-transition-veil"><p class="script">Opening the gates to your story…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script>
+    (function () {
+      const fill = document.getElementById('loaderFill');
+      const percentEl = document.getElementById('loaderPercent');
+      const track = document.querySelector('.loader-track');
+      const quoteEl = document.getElementById('loaderQuote');
+
+      /* A slower, gentler load — enough time to actually read each line
+         before the story begins. Roughly 12–14 seconds in total. */
+      const QUOTES = [
+        'Every beautiful story begins with a little surprise...',
+        'Some hearts find each other quietly, without warning...',
+        'This one was written just for you, Sonal...',
+        'Take a breath. Your story is about to begin...',
+      ];
+      let quoteIndex = 0;
+      let progress = 0;
+
+      function swapQuote() {
+        if (quoteIndex >= QUOTES.length - 1) return;
+        quoteEl.style.opacity = '0';
+        window.setTimeout(() => {
+          quoteIndex++;
+          quoteEl.textContent = '"' + QUOTES[quoteIndex] + '"';
+          quoteEl.style.opacity = '1';
+        }, 400);
+      }
+      quoteEl.style.transition = 'opacity 0.4s ease';
+      window.setTimeout(swapQuote, 3200);
+      window.setTimeout(swapQuote, 6800);
+      window.setTimeout(swapQuote, 10200);
+
+      function tick() {
+        /* small, slow increments so the bar creeps up gently */
+        progress += Math.random() * 1.1 + 0.5;
+        if (progress >= 100) {
+          progress = 100;
+          fill.style.width = '100%';
+          percentEl.textContent = '100';
+          track.setAttribute('aria-valuenow', '100');
+          window.setTimeout(() => {
+            document.querySelector('.page-transition-veil').classList.add('is-active');
+            window.setTimeout(() => { window.location.href = 'welcome.html'; }, 900);
+          }, 600);
+          return;
+        }
+        fill.style.width = progress + '%';
+        percentEl.textContent = Math.floor(progress);
+        track.setAttribute('aria-valuenow', String(Math.floor(progress)));
+        window.requestAnimationFrame(() => window.setTimeout(tick, 140));
+      }
+      window.requestAnimationFrame(() => window.setTimeout(tick, 300));
+    })();
+  </script>
+</body>
+</html>

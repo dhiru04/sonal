@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Happy Birthday, Sonal ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--dawn-gradient); }
+  .welcome-title {
+    background: linear-gradient(100deg, var(--text) 30%, var(--gold) 50%, var(--text) 70%);
+    background-size: 220% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shimmerText 5s linear infinite;
+  }
+  .welcome-sub { font-family: var(--font-script-alt); font-size: clamp(1.2rem, 3.5vw, 1.8rem); }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="clouds,butterflies,sparkles" data-count="12" aria-hidden="true"></div>
+
+    <div class="scene__content fade-in">
+      <p class="eyebrow">for the girl who made ordinary days magical</p>
+      <h1 class="title-hero welcome-title">Happy Birthday<br>Sonal ❤️</h1>
+      <p class="welcome-sub script-alt">A little kingdom of memories, made just for you.</p>
+      <a class="btn" href="password.html" data-transition style="margin-top: var(--space-md);">Start Journey ✨</a>
+    </div>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">Turning the very first page…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

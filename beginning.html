@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Beginning of Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--dream-gradient); }
+
+  .storybook-page {
+    min-height: 100svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: var(--space-lg) var(--space-md);
+    position: relative;
+  }
+  .page-number {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    color: var(--text-soft);
+    letter-spacing: 0.2em;
+  }
+  .storybook-text {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.25rem, 3.6vw, 1.9rem);
+    max-width: 38rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* ---- Unique opening-book hero (scene one) ---- */
+  .book-hero {
+    perspective: 1600px;
+    width: min(88vw, 24rem);
+    aspect-ratio: 3 / 4;
+    margin-bottom: var(--space-md);
+  }
+  .book {
+    position: relative;
+    width: 100%; height: 100%;
+    border-radius: 0.4rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .book-spine {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #fffaf1, var(--cream));
+    border-radius: 0.4rem;
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--space-md);
+    text-align: center;
+  }
+  .book-spine .script { font-size: clamp(1.4rem, 4.5vw, 2rem); }
+  .book-cover {
+    position: absolute; inset: 0;
+    background: linear-gradient(155deg, var(--pink), var(--lavender));
+    border-radius: 0.4rem 0.6rem 0.6rem 0.4rem;
+    box-shadow: var(--shadow-soft);
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    animation: openBookCover 2s cubic-bezier(0.65, 0, 0.35, 1) 1.6s forwards;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: var(--space-xs);
+    backface-visibility: hidden;
+  }
+  .book-cover .heart-seal {
+    width: 3rem; height: 3rem; border-radius: 50%;
+    background: var(--gold-shimmer);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-gold);
+  }
+  .book-cover .book-title { font-family: var(--font-script); font-size: clamp(1.6rem, 5vw, 2.3rem); color: var(--text); }
+  .book-cover .book-sub { font-family: var(--font-body); font-size: var(--fs-small); letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); }
+
+  @keyframes openBookCover {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(-172deg); }
+  }
+
+  .scroll-cue {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    color: var(--text-soft);
+    opacity: 0;
+    animation: fadeUp 1s ease 3.6s forwards, floatY 2.4s ease-in-out 3.6s infinite;
+  }
+
+  .three-cards {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--space-md);
+    width: 100%;
+    max-width: 60rem;
+    margin-top: var(--space-md);
+  }
+  .story-card { display: flex; flex-direction: column; gap: var(--space-xs); }
+  .story-card .icon { font-size: 2rem; }
+  .story-card h3 { font-family: var(--font-script); font-size: 1.8rem; }
+  .story-card p { font-weight: 300; font-size: var(--fs-body); color: var(--text-soft); }
+
+  .gallery-strip {
+    display: flex; gap: var(--space-sm);
+    overflow-x: auto;
+    padding: var(--space-sm) var(--space-xs);
+    max-width: 100%;
+    scroll-snap-type: x proximity;
+  }
+  .gallery-strip img {
+    width: clamp(6rem, 20vw, 9rem);
+    height: clamp(6rem, 20vw, 9rem);
+    object-fit: cover;
+    border-radius: var(--radius-soft);
+    border: 3px solid var(--white);
+    box-shadow: var(--shadow-soft);
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+  }
+
+  .final-scene .btn { margin-top: var(--space-md); }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+  <nav class="journey-dots" data-journey-dots data-total="8" data-current="4" aria-label="Journey progress"></nav>
+
+  <main>
+    <section class="storybook-page">
+      <div class="particles-layer" data-particles="petals,sparkles" data-count="10" aria-hidden="true"></div>
+      <p class="page-number fade-in is-visible">the diary is open</p>
+
+      <div class="book-hero">
+        <div class="book">
+          <div class="book-spine">
+            <p class="storybook-text" style="margin:0;">Every beautiful story begins unexpectedly…</p>
+          </div>
+          <div class="book-cover">
+            <span class="heart-seal">❤️</span>
+            <p class="book-title">Our Story</p>
+            <p class="book-sub">for Sonal</p>
+          </div>
+        </div>
+      </div>
+      <p class="scroll-cue">↓ keep scrolling to turn the page</p>
+    </section>
+
+    <section class="storybook-page">
+      <div class="particles-layer" data-particles="sparkles" data-count="10" aria-hidden="true"></div>
+      <p class="page-number fade-in">page two</p>
+      <p class="storybook-text fade-in">Among millions of people,<br>our paths crossed.</p>
+    </section>
+
+    <section class="storybook-page">
+      <div class="particles-layer" data-particles="stars" data-count="14" aria-hidden="true"></div>
+      <p class="page-number fade-in">page three</p>
+      <p class="storybook-text fade-in">Maybe destiny was smiling that day.</p>
+    </section>
+
+    <section class="storybook-page">
+      <p class="page-number fade-in">page four</p>
+      <h2 class="title fade-in" style="margin-bottom: var(--space-sm);">How It Began</h2>
+
+      <div class="three-cards">
+        <div class="card story-card fade-in">
+          <span class="icon">👋</span>
+          <h3>First Hello</h3>
+          <p>A simple hello that quietly changed everything.</p>
+        </div>
+        <div class="card story-card fade-in">
+          <span class="icon">💬</span>
+          <h3>Endless Conversations</h3>
+          <p>Hours that felt like minutes, and minutes I never wanted to end.</p>
+        </div>
+        <div class="card story-card fade-in">
+          <span class="icon">🌸</span>
+          <h3>The Beginning of Us</h3>
+          <p>Two strangers slowly becoming each other's favourite person.</p>
+        </div>
+      </div>
+
+      <div class="gallery-strip" data-gallery style="margin-top: var(--space-lg);">
+        <img src="assets/images/photo1.jpg" alt="A memory together" loading="lazy" />
+        <img src="assets/images/photo2.jpg" alt="A memory together" loading="lazy" />
+        <img src="assets/images/photo3.jpg" alt="A memory together" loading="lazy" />
+        <img src="assets/images/photo4.jpg" alt="A memory together" loading="lazy" />
+        <img src="assets/images/photo5.jpg" alt="A memory together" loading="lazy" />
+      </div>
+
+      <a class="btn fade-in" href="reasons.html" data-transition style="margin-top: var(--space-lg);">Continue the Story →</a>
+    </section>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">The next chapter begins…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

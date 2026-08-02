@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Make a Wish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--dawn-gradient); }
+
+  .cake-stage {
+    position: relative;
+    width: clamp(14rem, 42vw, 20rem);
+    height: clamp(12rem, 34vw, 17rem);
+    margin: var(--space-md) auto var(--space-sm);
+    perspective: 800px;
+  }
+  .cake-plate {
+    position: absolute; bottom: -0.6rem; left: 50%; transform: translateX(-50%);
+    width: 118%; height: 0.9rem;
+    background: linear-gradient(180deg, #f3ecec, #e2d6d6);
+    border-radius: 50%;
+    box-shadow: 0 0.6rem 1.6rem rgba(90,74,82,0.25);
+  }
+
+  .cake-tier {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    border-radius: 0.9rem 0.9rem 0.4rem 0.4rem;
+    box-shadow: var(--shadow-soft), inset -0.6rem 0 1.2rem rgba(90,74,82,0.08), inset 0.6rem 0 1.2rem rgba(255,255,255,0.5);
+  }
+  .tier-1 { bottom: 0; width: 100%; height: 40%; background: linear-gradient(160deg, #fff6ea, var(--peach)); }
+  .tier-2 { bottom: 34%; width: 76%; height: 34%; background: linear-gradient(160deg, #fff2f7, var(--pink)); }
+  .tier-3 { bottom: 60%; width: 54%; height: 28%; background: linear-gradient(160deg, #f8f2ff, var(--lavender)); }
+
+  .drip {
+    position: absolute; left: 0; right: 0; top: -0.5rem;
+    height: 1.1rem;
+    background: repeating-radial-gradient(circle at 10% 0, var(--gold) 0 0.32rem, transparent 0.34rem 1.3rem);
+    opacity: 0.9;
+    filter: drop-shadow(0 0.15rem 0.1rem rgba(90,74,82,0.15));
+  }
+
+  .swirl-ring {
+    position: absolute; top: -0.5rem; left: 50%; transform: translateX(-50%);
+    width: 88%; height: 1rem;
+    background-image: radial-gradient(circle, #fff6ea 45%, transparent 46%);
+    background-size: 0.9rem 0.9rem;
+    background-repeat: repeat-x;
+    opacity: 0.9;
+  }
+
+  .sprinkles { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
+  .sprinkle {
+    position: absolute;
+    width: 0.22rem; height: 0.6rem;
+    border-radius: 0.15rem;
+  }
+
+  .candles { position: absolute; top: -2.9rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.75rem; z-index: 4; }
+  .candle { position: relative; width: 0.32rem; height: 2rem; border-radius: 0.2rem;
+    background: repeating-linear-gradient(180deg, var(--gold) 0 0.35rem, #fff3c4 0.35rem 0.5rem);
+  }
+  .flame {
+    position: absolute; top: -1rem; left: 50%; transform: translateX(-50%);
+    width: 0.5rem; height: 0.85rem;
+    background: radial-gradient(circle at 50% 30%, #fff3b0, #ff9d5c 70%, transparent);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 0.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 0.4rem rgba(255,157,92,0.7));
+  }
+  .candle-glow {
+    position: absolute; top: -3.6rem; left: 50%; transform: translateX(-50%);
+    width: 8rem; height: 3rem;
+    background: radial-gradient(ellipse, rgba(255,215,150,0.35), transparent 70%);
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .candles.is-blown .flame { display: none; }
+  .candles.is-blown ~ .candle-glow,
+  .candle-glow.is-off { opacity: 0; }
+  .candles.is-blown .candle::after {
+    content: ''; position: absolute; top: -0.5rem; left: 50%; transform: translateX(-50%);
+    width: 0.35rem; height: 0.35rem; border-radius: 50%;
+    background: #b7a9ad; opacity: 0.7;
+  }
+
+  #smokeCanvas { position: absolute; top: -6.4rem; left: 0; width: 100%; height: 8rem; pointer-events: none; }
+  #cakeFxCanvas { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+
+  .wish-message { min-height: 2.4rem; }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+  <nav class="journey-dots" data-journey-dots data-total="8" data-current="8" aria-label="Journey progress"></nav>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="sparkles" data-count="10" aria-hidden="true"></div>
+    <canvas id="cakeFxCanvas" aria-hidden="true"></canvas>
+
+    <div class="scene__content">
+      <p class="eyebrow">close your eyes and wish</p>
+      <h1 class="title">Make a Wish, Princess</h1>
+
+      <div class="cake-stage">
+        <canvas id="smokeCanvas" aria-hidden="true"></canvas>
+        <div class="candle-glow" id="candleGlow"></div>
+        <div class="candles" id="candles">
+          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><span class="flame"></span></div>
+          <div class="candle"><span class="flame"></span></div>
+        </div>
+        <div class="cake-tier tier-3">
+          <div class="swirl-ring"></div>
+          <div class="drip"></div>
+          <div class="sprinkles" id="sprinkles3"></div>
+        </div>
+        <div class="cake-tier tier-2">
+          <div class="swirl-ring"></div>
+          <div class="drip"></div>
+          <div class="sprinkles" id="sprinkles2"></div>
+        </div>
+        <div class="cake-tier tier-1">
+          <div class="swirl-ring"></div>
+          <div class="drip"></div>
+          <div class="sprinkles" id="sprinkles1"></div>
+        </div>
+        <div class="cake-plate"></div>
+      </div>
+
+      <button class="btn" id="blowBtn">Blow the Candles 💨</button>
+      <p class="wish-message script" id="wishMessage" style="font-size: clamp(1.4rem, 5vw, 2.2rem);"></p>
+
+      <a class="btn" id="nextBtn" href="final.html" data-transition style="display:none; margin-top: var(--space-sm);">One Last Surprise →</a>
+    </div>
+  </main>
+
+  <audio id="happyBirthdaySong" preload="none" src="assets/music/happy-birthday.mp3"></audio>
+
+  <div class="page-transition-veil"><p class="script">One last surprise awaits…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/fireworks.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      /* scatter pastel sprinkles across each tier */
+      const SPRINKLE_COLORS = ['#F8C8DC', '#DCCEF9', '#CFE8FF', '#D7F5E9', '#F7D774'];
+      ['sprinkles1', 'sprinkles2', 'sprinkles3'].forEach((id) => {
+        const holder = document.getElementById(id);
+        const count = 14;
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement('span');
+          s.className = 'sprinkle';
+          s.style.left = (Math.random() * 90 + 4) + '%';
+          s.style.top = (Math.random() * 70 + 18) + '%';
+          s.style.background = SPRINKLE_COLORS[i % SPRINKLE_COLORS.length];
+          s.style.transform = 'rotate(' + Math.floor(Math.random() * 180) + 'deg)';
+          holder.appendChild(s);
+        }
+      });
+    })();
+
+    (function () {
+      const blowBtn = document.getElementById('blowBtn');
+      const candles = document.getElementById('candles');
+      const candleGlow = document.getElementById('candleGlow');
+      const wishMessage = document.getElementById('wishMessage');
+      const nextBtn = document.getElementById('nextBtn');
+      const smokeCanvas = document.getElementById('smokeCanvas');
+      const fxCanvas = document.getElementById('cakeFxCanvas');
+      const bgMusic = document.querySelector('[data-bg-music]');
+      const hbSong = document.getElementById('happyBirthdaySong');
+      let blown = false;
+
+      blowBtn.addEventListener('click', () => {
+        if (blown) return;
+        blown = true;
+        candles.classList.add('is-blown');
+        candleGlow.classList.add('is-off');
+        smokeCanvas.width = smokeCanvas.clientWidth;
+        smokeCanvas.height = smokeCanvas.clientHeight;
+        window.BDAY.smoke(smokeCanvas, smokeCanvas.clientWidth / 2, smokeCanvas.clientHeight - 10);
+        window.BDAY.confetti(fxCanvas, { count: 150, duration: 3600 });
+        window.BDAY.fireworks(fxCanvas, { duration: 4500 });
+        wishMessage.textContent = 'Happy Birthday, Princess ❤️';
+        blowBtn.style.display = 'none';
+        window.setTimeout(() => { nextBtn.style.display = 'inline-flex'; }, 1200);
+
+        /* swap the soft background piano for the Happy Birthday song */
+        if (bgMusic && !bgMusic.paused) bgMusic.pause();
+        hbSong.volume = 0.7;
+        hbSong.currentTime = 0;
+        hbSong.play().catch(() => { /* the button click above counts as a user gesture, so this should succeed */ });
+        hbSong.addEventListener('ended', () => {
+          if (bgMusic) bgMusic.play().catch(() => {});
+        }, { once: true });
+      });
+    })();
+  </script>
+</body>
+</html>

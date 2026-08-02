@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>12 Months, 12 Reasons to Love You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--dawn-gradient); }
+  main.scene { min-height: auto; padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+
+  .progress-note {
+    font-family: var(--font-body);
+    font-size: var(--fs-small);
+    color: var(--text-soft);
+  }
+
+  .bubble-field {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: clamp(0.8rem, 3vw, 1.6rem);
+    width: 100%;
+    max-width: 50rem;
+    margin-top: var(--space-lg);
+  }
+
+  .bubble {
+    position: relative;
+    width: clamp(4.6rem, 15vw, 6rem);
+    height: clamp(4.6rem, 15vw, 6rem);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--fs-small);
+    color: var(--text);
+    box-shadow: var(--shadow-soft);
+    animation: bubbleFloat 5s ease-in-out infinite;
+    transition: transform 0.3s var(--transition-dreamy), box-shadow 0.3s ease;
+  }
+  .bubble:hover, .bubble:focus-visible {
+    transform: scale(1.08);
+    box-shadow: 0 1rem 2.2rem rgba(90,74,82,0.22);
+  }
+  .bubble:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
+  .bubble.is-opened {
+    animation: none;
+    background: var(--gold-shimmer) !important;
+    box-shadow: var(--shadow-gold);
+  }
+  .bubble.is-opened::after {
+    content: '✓';
+    position: absolute; top: -0.2rem; right: -0.2rem;
+    width: 1.3rem; height: 1.3rem;
+    background: var(--white);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .reveal-panel {
+    width: 100%;
+    max-width: 30rem;
+    margin-top: var(--space-lg);
+    min-height: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(0.8rem) scale(0.98);
+    transition: opacity 0.5s var(--transition-dreamy), transform 0.5s var(--transition-dreamy);
+  }
+  .reveal-panel.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  .reveal-panel .month-name { font-family: var(--font-script); font-size: 2.2rem; }
+  .reveal-panel .reason-text {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: var(--fs-body-lg);
+    color: var(--text);
+    background-image: linear-gradient(120deg, rgba(247,215,116,0.55), rgba(247,215,116,0.55));
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 0% 100%;
+    animation: highlightSweep 0.8s ease 0.15s forwards;
+    padding: 0 0.1em;
+  }
+
+  .continue-wrap { margin-top: var(--space-lg); display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); }
+  .continue-note { font-size: var(--fs-small); color: var(--text-soft); }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+  <nav class="journey-dots" data-journey-dots data-total="8" data-current="5" aria-label="Journey progress"></nav>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="petals" data-count="10" aria-hidden="true"></div>
+
+    <div class="scene__content fade-in is-visible" style="max-width: min(70rem, 94vw);">
+      <p class="eyebrow">a whole year of you</p>
+      <h1 class="title">12 Months<br>12 Reasons to Love You ❤️</h1>
+      <p class="instruction-hint">💗 Tap each bubble to reveal a reason</p>
+      <p class="progress-note"><span id="poppedCount">0</span> of 12 opened</p>
+
+      <div class="bubble-field" id="bubbleField" aria-label="Twelve bubbles, one for each month"></div>
+
+      <div class="reveal-panel" id="revealPanel" aria-live="polite">
+        <p class="month-name" id="revealMonth"></p>
+        <p class="reason-text" id="revealReason"></p>
+      </div>
+
+      <div class="continue-wrap">
+        <p class="continue-note" id="continueNote">Pop a few more before you continue — or read the letter whenever you're ready.</p>
+        <a class="btn fade-in is-visible" href="letter.html" data-transition>Read My Letter →</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">Sealing a letter, just for you…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script>
+    const REASONS = [
+      ['January', 'Your smile brightens every season.'],
+      ['February', 'Your kindness makes life beautiful.'],
+      ['March', 'Your laugh is my favourite sound.'],
+      ['April', 'Your caring heart inspires me.'],
+      ['May', 'Your positivity gives me strength.'],
+      ['June', 'Every conversation with you feels effortless.'],
+      ['July', 'You motivate me to become better.'],
+      ['August', 'You make ordinary days unforgettable.'],
+      ['September', 'Your patience amazes me.'],
+      ['October', 'You make my heart feel at home.'],
+      ['November', 'The world became brighter because you were born.'],
+      ['December', 'Every future dream includes you.'],
+    ];
+    const BUBBLE_COLORS = ['var(--pink)', 'var(--peach)', 'var(--lavender)', 'var(--baby-blue)', 'var(--mint)'];
+
+    const field = document.getElementById('bubbleField');
+    const revealPanel = document.getElementById('revealPanel');
+    const revealMonth = document.getElementById('revealMonth');
+    const revealReason = document.getElementById('revealReason');
+    const poppedCountEl = document.getElementById('poppedCount');
+    const continueNote = document.getElementById('continueNote');
+    let poppedCount = 0;
+
+    REASONS.forEach(([month, reason], i) => {
+      const bubble = document.createElement('button');
+      bubble.type = 'button';
+      bubble.className = 'bubble';
+      bubble.style.background = BUBBLE_COLORS[i % BUBBLE_COLORS.length];
+      bubble.style.animationDelay = (i * 0.3) + 's';
+      bubble.textContent = month.slice(0, 3);
+      bubble.setAttribute('aria-label', month + ' — tap to reveal a reason');
+
+      bubble.addEventListener('click', () => {
+        revealPanel.classList.remove('is-visible');
+        revealMonth.textContent = month;
+        revealReason.textContent = reason;
+
+        /* restart the highlight-sweep animation on the reason text */
+        revealReason.style.animation = 'none';
+        void revealReason.offsetWidth;
+        revealReason.style.animation = '';
+
+        window.setTimeout(() => revealPanel.classList.add('is-visible'), 60);
+
+        if (!bubble.classList.contains('is-opened')) {
+          bubble.classList.add('is-opened');
+          poppedCount++;
+          poppedCountEl.textContent = poppedCount;
+          if (poppedCount >= 12) {
+            continueNote.textContent = "You've opened every reason — happy birthday, my love. 💛";
+          }
+        }
+      });
+
+      field.appendChild(bubble);
+    });
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Thank You For Coming Into My Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--night-gradient); color: #fff2e4; }
+  .title, .eyebrow, .script { color: #fff2e4; }
+  .eyebrow { color: rgba(255,242,228,0.75); }
+
+  /* ---- Shared stage: bubbles and the constellation occupy the
+     exact same box, stacked with position:absolute, so the second
+     moment replaces the first in place — no scrolling required. ---- */
+  .thanks-stage {
+    position: relative;
+    width: min(94vw, 30rem);
+    height: clamp(16rem, 55svh, 28rem);
+  }
+
+  .bubble-msg {
+    position: absolute;
+    bottom: -3rem;
+    left: 0;
+    width: clamp(3.6rem, 11vw, 5rem);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.4em;
+    background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.85), rgba(255,242,228,0.18) 60%, rgba(255,242,228,0.08) 100%);
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow: 0 0 1.2rem rgba(255,242,228,0.35), inset 0 0 0.6rem rgba(255,255,255,0.35);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+    color: #fff2e4;
+    animation: riseLantern linear forwards;
+  }
+
+  .final-line {
+    font-family: var(--font-script);
+    font-size: clamp(2rem, 7vw, 3.6rem);
+    opacity: 0; transform: translateY(1rem);
+    transition: opacity 1s ease, transform 1s ease;
+    margin-top: var(--space-md);
+  }
+  .final-line.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ---- Signature moment: a hand-drawn constellation, one star for
+     each reason you're thankful for, connecting into a heart.
+     Positioned to fill the same stage the bubbles just occupied. ---- */
+  .constellation-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .constellation-wrap.is-visible { opacity: 1; }
+  .constellation-wrap svg { width: 85%; height: 85%; }
+
+  .constellation-caption {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-style: italic;
+    font-size: var(--fs-body);
+    color: rgba(255,242,228,0.85);
+    opacity: 0;
+    transition: opacity 1s ease;
+    margin-top: var(--space-xs);
+  }
+  .constellation-caption.is-visible { opacity: 1; }
+  #constellationPath {
+    fill: none;
+    stroke: rgba(255,242,228,0.65);
+    stroke-width: 0.6;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  #constellationPath.is-drawing { animation: drawLine 3.4s ease forwards; }
+  .const-star {
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .const-star.is-visible { animation: starPop 0.5s ease forwards; }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="stars" data-count="24" aria-hidden="true"></div>
+
+    <div class="scene__content">
+      <p class="eyebrow">a sky full of thank-yous</p>
+
+      <div class="thanks-stage" id="thanksStage">
+        <div id="bubbleField" aria-hidden="true"></div>
+
+        <div class="constellation-wrap" id="constellationWrap">
+          <svg viewBox="0 0 200 180" aria-hidden="true">
+            <path id="constellationPath" d="" />
+            <g id="constellationStars"></g>
+          </svg>
+        </div>
+      </div>
+
+      <p class="constellation-caption" id="constellationCaption">Every star, a little thank-you — for finding your way into my life.</p>
+
+      <p class="final-line script" id="finalLine">I Love You ❤️</p>
+      <a class="btn" id="foreverBtn" href="forever.html" data-transition style="display:none; margin-top: var(--space-md);">Forever →</a>
+    </div>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">Forever begins now…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      const words = ['Thank', 'You', 'For', 'Coming', 'Into', 'My', 'Life'];
+      const field = document.getElementById('bubbleField');
+      const finalLine = document.getElementById('finalLine');
+      const foreverBtn = document.getElementById('foreverBtn');
+
+      words.forEach((word, i) => {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble-msg';
+        const left = 6 + (i * (86 / (words.length - 1)));
+        const duration = 9 + Math.random() * 3;
+        bubble.style.left = left + '%';
+        bubble.style.animationDuration = duration + 's';
+        bubble.style.animationDelay = (i * 0.6) + 's';
+        bubble.style.setProperty('--sway', (Math.random() * 6 - 3) + 'vw');
+        bubble.textContent = word;
+        field.appendChild(bubble);
+      });
+
+      const bubblesDone = words.length * 600 + 3800;
+
+      /* ---- Build the heart constellation using a parametric heart curve ---- */
+      function buildConstellation() {
+        const svgPath = document.getElementById('constellationPath');
+        const starsGroup = document.getElementById('constellationStars');
+        const wrap = document.getElementById('constellationWrap');
+        const caption = document.getElementById('constellationCaption');
+
+        const POINTS = 14;
+        const coords = [];
+        for (let i = 0; i < POINTS; i++) {
+          const t = (i / POINTS) * Math.PI * 2;
+          const hx = 16 * Math.pow(Math.sin(t), 3);
+          const hy = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+          const x = 100 + hx * 5;
+          const y = 90 - hy * 5.4;
+          coords.push([x, y]);
+        }
+
+        const d = coords.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + ' Z';
+        svgPath.setAttribute('d', d);
+
+        /* use the path's real length so the draw-on animation is smooth
+           across its full duration, rather than finishing in a snap */
+        const len = svgPath.getTotalLength();
+        svgPath.style.strokeDasharray = String(len);
+        svgPath.style.strokeDashoffset = String(len);
+        svgPath.style.setProperty('--len', String(len));
+
+        coords.forEach((p, i) => {
+          const star = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          star.setAttribute('cx', p[0]);
+          star.setAttribute('cy', p[1]);
+          star.setAttribute('r', 2.1);
+          star.setAttribute('fill', i % 3 === 0 ? '#F7D774' : '#fff2e4');
+          star.setAttribute('class', 'const-star');
+          star.style.animationDelay = (i * 0.09) + 's';
+          starsGroup.appendChild(star);
+        });
+
+        wrap.classList.add('is-visible');
+        window.setTimeout(() => svgPath.classList.add('is-drawing'), 200);
+        window.setTimeout(() => {
+          document.querySelectorAll('.const-star').forEach((s) => s.classList.add('is-visible'));
+        }, 500);
+        window.setTimeout(() => caption.classList.add('is-visible'), 2600);
+      }
+
+      window.setTimeout(buildConstellation, bubblesDone);
+
+      window.setTimeout(() => {
+        finalLine.classList.add('is-visible');
+        window.setTimeout(() => { foreverBtn.style.display = 'inline-flex'; }, 800);
+      }, bubblesDone + 4600);
+    })();
+  </script>
+</body>
+</html>

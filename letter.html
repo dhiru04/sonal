@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>A Letter for You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--sky-gradient); }
+  main.scene { align-items: center; padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+
+  .parchment {
+    position: relative;
+    width: min(92vw, 42rem);
+    background:
+      radial-gradient(circle at 15% 20%, rgba(247,215,116,0.15), transparent 40%),
+      linear-gradient(170deg, #fffaf1, #fff2df 60%, #fdecd2);
+    border-radius: 0.6rem;
+    box-shadow: var(--shadow-soft), 0 0 0 1px rgba(247,215,116,0.4) inset;
+    padding: var(--space-lg) var(--space-md);
+    text-align: left;
+  }
+  .parchment::before, .parchment::after {
+    content: '';
+    position: absolute; width: 2.4rem; height: 2.4rem;
+    border: 3px solid var(--gold);
+    opacity: 0.6;
+  }
+  .parchment::before { top: 0.6rem; left: 0.6rem; border-right: none; border-bottom: none; }
+  .parchment::after { bottom: 0.6rem; right: 0.6rem; border-left: none; border-top: none; }
+
+  .wax-seal {
+    width: 3.6rem; height: 3.6rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e58aa2, #b0335a);
+    box-shadow: 0 0.3rem 0.8rem rgba(176,51,90,0.5);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff2df; font-family: var(--font-script);
+    font-size: 1.3rem;
+    margin: 0 auto var(--space-md);
+    transform: rotate(-6deg);
+  }
+
+  .letter-heading { font-family: var(--font-script); font-size: clamp(1.8rem, 5vw, 2.6rem); text-align: center; margin-bottom: var(--space-sm); }
+
+  .letter-body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1rem, 2.3vw, 1.2rem);
+    line-height: 1.95;
+    letter-spacing: 0.01em;
+    color: #4a3a41;
+    white-space: pre-wrap;
+    min-height: 20rem;
+  }
+
+  .letter-signature {
+    margin-top: var(--space-md);
+    text-align: right;
+    font-family: var(--font-script);
+    font-size: clamp(1.4rem, 4vw, 2rem);
+  }
+
+  .type-caret { color: var(--gold); font-weight: 700; }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+  <nav class="journey-dots" data-journey-dots data-total="8" data-current="6" aria-label="Journey progress"></nav>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="petals" data-count="8" aria-hidden="true"></div>
+
+    <div class="parchment fade-in is-visible">
+      <div class="wax-seal">S♥D</div>
+      <h1 class="letter-heading">My Dearest Sonal,</h1>
+      <p class="letter-body" id="letterText"></p>
+      <p class="letter-signature">Forever yours, Dheeraj</p>
+    </div>
+
+    <a class="btn fade-in is-visible" href="gift.html" data-transition style="margin-top: var(--space-lg);">Open Your Gift 🎁</a>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">A gift is waiting…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const letterText = `On a day as special as yours, I find myself with a heart too full for ordinary words.
+
+You walked into my life quietly, and somehow rearranged everything in it — for the better. Every laugh you've shared with me, every late-night conversation, every small kindness you never even noticed yourself giving — I've kept them all, like pressed flowers in a book I never want to close.
+
+Today isn't just about the day you were born. It's about the day the world got a little softer, a little kinder, and a lot more beautiful — because you were in it.
+
+I don't have a kingdom to offer you, no glass slipper, no enchanted rose. What I have is simpler and, I hope, better: a heart that chose you once and keeps choosing you, quietly, every single day since.
+
+So here's to you, Sonal — my favourite person, my calm in every storm, my very own happy ending that somehow keeps getting happier.
+
+Happy Birthday, my love. May this year hold every single thing your heart has been quietly hoping for.`;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('letterText');
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              window.BDAY.typewriter(el, letterText, 18);
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.1 });
+        obs.observe(el);
+      } else {
+        window.BDAY.typewriter(el, letterText, 18);
+      }
+    });
+  </script>
+</body>
+</html>

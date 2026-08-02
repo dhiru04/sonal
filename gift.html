@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>A Gift For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animations.css" />
+<link rel="stylesheet" href="css/responsive.css" />
+<style>
+  body { background: var(--dream-gradient); }
+
+  .gift-wrap {
+    position: relative;
+    width: clamp(9rem, 30vw, 13rem);
+    height: clamp(8rem, 26vw, 11rem);
+    cursor: pointer;
+    margin: var(--space-lg) auto;
+  }
+  .gift-box {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 65%;
+    background: linear-gradient(135deg, var(--pink), var(--lavender));
+    border-radius: 0.6rem;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.5s var(--transition-dreamy);
+  }
+  .gift-lid {
+    position: absolute; top: 0; left: -6%;
+    width: 112%; height: 34%;
+    background: linear-gradient(135deg, var(--gold), #fce9ad);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-soft);
+    transform-origin: bottom center;
+    transition: transform 0.7s var(--transition-dreamy), opacity 0.7s ease;
+    z-index: 3;
+  }
+  .ribbon-v {
+    position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 14%; transform: translateX(-50%);
+    background: var(--gold);
+    z-index: 2;
+  }
+  .ribbon-bow {
+    position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%);
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    z-index: 4;
+  }
+
+  .gift-wrap.is-open .gift-lid {
+    transform: rotateX(-120deg) translateY(-1rem);
+    opacity: 0;
+  }
+  .gift-wrap.is-open .gift-box {
+    transform: scale(1.06);
+    box-shadow: 0 0 3.5rem rgba(247,215,116,0.6);
+  }
+
+  .gift-hint { font-size: var(--fs-small); color: var(--text-soft); }
+
+  .gift-reveal {
+    opacity: 0; transform: translateY(1rem);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    margin-top: var(--space-md);
+  }
+  .gift-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  #giftCanvas {
+    position: fixed; inset: 0; z-index: 30; pointer-events: none;
+    width: 100%; height: 100%;
+  }
+
+  .float-emoji {
+    position: absolute;
+    font-size: 1.6rem;
+    animation: heartRise 3.2s ease-out forwards;
+    pointer-events: none;
+    z-index: 25;
+  }
+
+  .gift-photo {
+    width: clamp(11rem, 40vw, 15rem);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-soft);
+    border: 6px solid var(--white);
+    box-shadow: var(--shadow-soft);
+    margin: var(--space-sm) auto;
+  }
+
+  .gift-wishes {
+    max-width: 32rem;
+    margin: var(--space-sm) auto 0;
+  }
+</style>
+</head>
+<body>
+  <audio data-bg-music loop preload="auto" src="assets/music/soft-piano.mp3"></audio>
+  <nav class="journey-dots" data-journey-dots data-total="8" data-current="7" aria-label="Journey progress"></nav>
+
+  <main class="scene">
+    <div class="particles-layer" data-particles="sparkles" data-count="10" aria-hidden="true"></div>
+    <canvas id="giftCanvas" aria-hidden="true"></canvas>
+
+    <div class="scene__content">
+      <p class="eyebrow">one more surprise</p>
+      <h1 class="title">A Little Gift For You</h1>
+
+      <div class="gift-wrap" id="giftWrap" role="button" tabindex="0" aria-label="Open your gift">
+        <div class="gift-lid"></div>
+        <div class="ribbon-v" aria-hidden="true"></div>
+        <div class="ribbon-bow" aria-hidden="true">🎀</div>
+        <div class="gift-box"></div>
+      </div>
+
+      <p class="gift-hint" id="giftHint">Tap the box to open it</p>
+
+      <div class="gift-reveal" id="giftReveal">
+        <h2 class="script" style="font-size: clamp(1.8rem, 6vw, 3rem);">Happy Birthday<br>My Princess ❤️</h2>
+
+        <img class="gift-photo" src="assets/images/us.jpg" alt="A photo of Sonal and Dheeraj" loading="lazy" />
+
+        <p class="romantic-text gift-wishes">Happy Birthday, my love. Every year with you feels like a gift I didn't know I deserved. Thank you for choosing me, for loving me so gently, and for being the best part of every single day. Here's to another year of us — I love you more than words will ever manage to say.</p>
+
+        <a class="btn" href="cake.html" data-transition style="margin-top: var(--space-md);">Make a Wish 🕯️</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="page-transition-veil"><p class="script">A cake is waiting to be lit…</p></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/fireworks.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      const wrap = document.getElementById('giftWrap');
+      const hint = document.getElementById('giftHint');
+      const reveal = document.getElementById('giftReveal');
+      const canvas = document.getElementById('giftCanvas');
+      let opened = false;
+
+      function spawnFloaters() {
+        const symbols = ['🦋', '🌸', '✨', '💗'];
+        for (let i = 0; i < 22; i++) {
+          const span = document.createElement('span');
+          span.className = 'float-emoji';
+          span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+          const rect = wrap.getBoundingClientRect();
+          span.style.left = (rect.left + rect.width / 2 + (Math.random() * 160 - 80)) + 'px';
+          span.style.top = (rect.top + rect.height / 2) + 'px';
+          span.style.animationDelay = (Math.random() * 0.6) + 's';
+          document.body.appendChild(span);
+          window.setTimeout(() => span.remove(), 3800);
+        }
+      }
+
+      function openGift() {
+        if (opened) return;
+        opened = true;
+        wrap.classList.add('is-open');
+        hint.style.opacity = '0';
+        spawnFloaters();
+        window.BDAY.confetti(canvas, { count: 160, duration: 3800 });
+        window.setTimeout(() => reveal.classList.add('is-visible'), 500);
+      }
+
+      wrap.addEventListener('click', openGift);
+      wrap.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') openGift(); });
+    })();
+  </script>
+</body>
+</html>

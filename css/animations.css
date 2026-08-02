@@ -1,0 +1,115 @@
+/* ============================================================
+   ANIMATIONS — keyframes shared across the journey
+   ============================================================ */
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-1.2rem) translateX(0.4rem); }
+}
+
+@keyframes driftAcross {
+  from { transform: translateX(-10vw); }
+  to   { transform: translateX(110vw); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes fallPetal {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) translateX(var(--drift, 4vw)) rotate(360deg); opacity: 0.9; }
+}
+
+@keyframes heartRise {
+  0% { transform: translateY(0) scale(0.7); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(-92vh) scale(1.1); opacity: 0; }
+}
+
+@keyframes pulseHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+@keyframes shimmerText {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes gentleGlow {
+  0%, 100% { filter: drop-shadow(0 0 0.4rem rgba(247,215,116,0.5)); }
+  50% { filter: drop-shadow(0 0 1.1rem rgba(247,215,116,0.9)); }
+}
+
+@keyframes bookOpen {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-180deg); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; transform: scaleY(1) translateX(0); }
+  45% { opacity: 0.85; transform: scaleY(0.92) translateX(-1px); }
+  55% { opacity: 0.9; transform: scaleY(1.05) translateX(1px); }
+}
+
+@keyframes riseLantern {
+  0% { transform: translateY(10vh) translateX(0); opacity: 0; }
+  8% { opacity: 1; }
+  100% { transform: translateY(-115vh) translateX(var(--sway, 3vw)); opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { opacity: 1; transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+
+@keyframes cloudDrift {
+  from { background-position: 0 0; }
+  to { background-position: 100vw 0; }
+}
+
+@keyframes typewriterCaret {
+  50% { opacity: 0; }
+}
+
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-0.8rem) translateX(0.6rem); }
+  66% { transform: translateY(0.6rem) translateX(-0.5rem); }
+}
+
+@keyframes highlightSweep {
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
+}
+
+@keyframes drawLine {
+  from { stroke-dashoffset: var(--len, 1000); }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes starPop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-float { animation: floatY 6s ease-in-out infinite; }
+.anim-twinkle { animation: twinkle 3s ease-in-out infinite; }
+.anim-glow { animation: gentleGlow 2.6s ease-in-out infinite; }
+.anim-wiggle:hover { animation: wiggle 0.5s ease-in-out; }
